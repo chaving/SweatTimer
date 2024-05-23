@@ -15,7 +15,7 @@ class App extends StatelessWidget {
           title: const Text('타이틀'),
           backgroundColor: AppColors.blue.shade3,
         ),
-        body: const SafeArea(child: TimerView()),
+        body: SafeArea(child: TimerView()),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(

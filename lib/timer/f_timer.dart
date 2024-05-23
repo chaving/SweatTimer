@@ -6,7 +6,9 @@ import 'package:sweat_timer/timer/w_next_type_card.dart';
 import 'package:sweat_timer/timer/w_timer_round_section.dart';
 
 class TimerView extends StatefulWidget {
-  const TimerView({super.key});
+  const TimerView({
+    super.key,
+  });
 
   @override
   State<TimerView> createState() => _TimerViewState();
@@ -55,9 +57,6 @@ class _TimerViewState extends State<TimerView> {
                           child: Text(
                         format(time),
                       )))),
-              const SizedBox(
-                height: 0,
-              ),
             ],
           ),
         ),
@@ -65,7 +64,7 @@ class _TimerViewState extends State<TimerView> {
         const NextTypeCard(),
 
         Container(
-          margin: const EdgeInsets.only(top: 20),
+          margin: const EdgeInsets.only(top: 15),
           padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
             color: AppColors.white,
@@ -88,7 +87,7 @@ class _TimerViewState extends State<TimerView> {
               // 남은 라운드, 사이클 정보
               const SizedBox(
                 width: double.infinity,
-                height: 80,
+                height: 60,
                 child: TimerRoundSection(),
               ),
 
@@ -104,7 +103,9 @@ class _TimerViewState extends State<TimerView> {
                     child: Row(
                       children: [
                         MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            NextTypeCard.changeStateOf();
+                          },
                           color: AppColors.blue,
                           textColor: Colors.white,
                           padding: const EdgeInsets.all(10),
