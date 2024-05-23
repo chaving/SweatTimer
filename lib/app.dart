@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sweat_timer/common/constants.dart';
 import 'package:sweat_timer/common/util/fonts.dart';
 import 'package:sweat_timer/timer/f_timer.dart';
 
@@ -11,10 +12,10 @@ class App extends StatelessWidget {
       theme: ThemeData(fontFamily: FontsFamily.giantsRegular),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('타이틀'),
-          backgroundColor: Colors.green,
+          title: const Text('타이틀'),
+          backgroundColor: AppColors.blue.shade3,
         ),
-        body: const TimerView(),
+        body: const SafeArea(child: TimerView()),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(

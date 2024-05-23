@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sweat_timer/common/constants.dart';
+import 'package:sweat_timer/timer/w_next_type_card.dart';
+import 'package:sweat_timer/timer/w_timer_round_section.dart';
 
 class TimerView extends StatefulWidget {
   const TimerView({super.key});
@@ -11,7 +13,12 @@ class TimerView extends StatefulWidget {
 }
 
 class _TimerViewState extends State<TimerView> {
+  var timerIcon = Icons.play_arrow;
+  var color = AppColors.grey.shade7;
+
   late Timer timer;
+  int time = 0;
+  bool isPlaying = false;
 
   @override
   void initState() {
@@ -28,121 +35,168 @@ class _TimerViewState extends State<TimerView> {
     return Column(
       children: [
         // 타이머 영역
-        Column(
-          children: [
-            const SizedBox(
-              height: 30,
-            ),
-            const SizedBox(
-              height: 70,
-              child: Text(
-                "준비",
-                style: TextStyle(fontSize: 60),
-              ),
-            ),
-            const SizedBox(
-              height: 200,
-              child: Center(
-                child: Text(
-                  '00:00',
-                  style: TextStyle(fontSize: 120),
-                ),
-              ),
-            ),
-            Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  margin: const EdgeInsets.fromLTRB(40, 50, 40, 0),
-                  decoration: BoxDecoration(
-                    color: AppColors.red.shade5,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 70,
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: AppColors.green.shade5,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Row(
-                    children: [
-                      SizedBox(
-                        width: 140,
-                        child: Text(
-                          '1 라운드',
-                          textAlign: TextAlign.right,
-                          style: TextStyle(fontSize: 25),
-                        ),
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            '00:00',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-
         Expanded(
           child: Column(
             children: [
               const SizedBox(
-                height: 20,
+                height: 50,
               ),
-              Container(
+              const Expanded(
+                  flex: 1,
+                  child: FittedBox(
+                      child: Text(
+                    "준비",
+                  ))),
+              Expanded(
+                  flex: 2,
+                  child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: FittedBox(
+                          child: Text(
+                        format(time),
+                      )))),
+              const SizedBox(
+                height: 0,
+              ),
+            ],
+          ),
+        ),
+
+        const NextTypeCard(),
+
+        Container(
+          margin: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 25.0,
+                spreadRadius: 5.0,
+                offset: const Offset(0, 0),
+              )
+            ],
+          ),
+          child: Column(
+            children: [
+              //---------------------------------------
+              // 남은 라운드, 사이클 정보
+              const SizedBox(
                 width: double.infinity,
                 height: 80,
-                child: Row(
-                  children: [
-                    // 라운드
-                    Expanded(
-                      child: Center(
-                        child: Container(
-                          height: double.infinity,
-                          margin: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.pink,
+                child: TimerRoundSection(),
+              ),
+
+              const SizedBox(height: 15),
+              //-------------------------
+              // 시작 영역
+              SizedBox(
+                width: double.infinity,
+                height: 100,
+                child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Row(
+                      children: [
+                        MaterialButton(
+                          onPressed: () {},
+                          color: AppColors.blue,
+                          textColor: Colors.white,
+                          padding: const EdgeInsets.all(10),
+                          shape: const CircleBorder(),
+                          child: const Icon(
+                            Icons.play_arrow,
+                            size: 40,
                           ),
                         ),
-                      ),
-                    ),
-
-                    // 사이클
-                    Expanded(
-                      child: Container(
-                        height: double.infinity,
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.pink,
+                        const Spacer(),
+                        SizedBox(
+                          width: 90,
+                          height: 90,
+                          child: Stack(
+                            children: [
+                              const SizedBox(
+                                width: double.infinity,
+                                height: double.infinity,
+                                child: CircularProgressIndicator(
+                                  value: 0.7,
+                                  strokeWidth: 7,
+                                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.raspberry),
+                                ),
+                              ),
+                              Center(
+                                  child: MaterialButton(
+                                      onPressed: () {
+                                        click();
+                                      },
+                                      color: AppColors.raspberry,
+                                      textColor: Colors.white,
+                                      padding: const EdgeInsets.all(10),
+                                      shape: const CircleBorder(),
+                                      child: Icon(
+                                        timerIcon,
+                                        size: 55,
+                                      )))
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  color: Colors.pink,
-                ),
+                        const Spacer(),
+                        MaterialButton(
+                          onPressed: () {},
+                          color: AppColors.blue,
+                          textColor: Colors.white,
+                          padding: const EdgeInsets.all(10),
+                          shape: const CircleBorder(),
+                          child: const Icon(
+                            Icons.refresh_rounded,
+                            size: 35,
+                          ),
+                        ),
+                      ],
+                    )),
               )
             ],
           ),
         ),
       ],
     );
+  }
+
+  String format(int seconds) {
+    var duration = Duration(seconds: seconds);
+
+    var startIndex = seconds >= 3600 ? 0 : 2;
+    return duration.toString().split('.').first.substring(startIndex);
+  }
+
+  void click() {
+    setState(() {
+      isPlaying = !isPlaying;
+
+      if (isPlaying) {
+        timerIcon = Icons.pause;
+        startTimer();
+      } else {
+        timerIcon = Icons.play_arrow;
+        stopTimer();
+      }
+    });
+  }
+
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        time++;
+      });
+    });
+  }
+
+  void stopTimer() {
+    timer.cancel();
   }
 }
